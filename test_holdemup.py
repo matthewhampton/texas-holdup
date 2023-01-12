@@ -21,5 +21,11 @@ class TestHoldemUp(unittest.TestCase):
     def test_parse_hand_invalid_card_len(self):
         self.assertRaises(ParseError, parse_hand, "Kc 9ss Ks Kd 9d 3c 6d")
 
+    def test_parse_hand_invalid_card_face(self):
+        self.assertRaises(ParseError, parse_hand, "Kc Hs Ks Kd 9d 3c 6d")
+
+    def test_parse_hand_invalid_card_suit(self):
+        self.assertRaises(ParseError, parse_hand, "Kc 9k Ks Kd 9d 3c 6d")
+
 if __name__ == '__main__':
     unittest.main()
