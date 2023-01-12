@@ -70,16 +70,17 @@ BOB: Hey! Show's on in ten minutes! Get to work!
 
 # Hands
 
-Name	Description	Example
-High card	Simple value of the card. Lowest: 2 – Highest: Ace 
-Pair	Two cards with the same value	
-Two pairs	Two times two cards with the same value	
-Three of a kind	Three cards with the same value	
-Straight	Sequence of 5 cards in increasing value (Ace can precede 2 and follow up King)
-Flush	5 cards of the same suit
-Full house	Combination of three of a kind and a pair	
-Four of a kind	Four cards of the same value	
-Straight flush	Straight of the same suit
+These are shown lowest to highest:
+
+1. High card: Simple value of the card. Lowest: 2 – Highest: Ace 
+2. Pair: Two cards with the same value	
+3. Two pairs: Two times two cards with the same value	
+4. Three of a kind: Three cards with the same value	
+5. Straight: Sequence of 5 cards in increasing value (Ace can precede 2 and follow up King)
+6. Flush: 5 cards of the same suit
+7. Full house: Combination of three of a kind and a pair	
+8. Four of a kind: Four cards of the same value	
+9. Straight flush: Straight of the same suit
 
 # Links
 
