@@ -88,6 +88,8 @@ See <https://codingdojo.org/kata/TexasHoldEm/> or <https://gitlab.com/codingdojo
 
 See <https://www.pokernews.com/poker-hands.htm> for a list of poker hands with an explanation of how to figure out who wins when comparing the same hand but different values (e.g. when it comes to full houses, the higher three of a kind determines which hand wins, so in this case "kings full" would beat "fives full" )
 
-See <https://www.google.com/search?q=what+is+the+high+card+for+a+straight+that+starts+with+an+ace>:
+See <https://www.google.com/search?q=what+is+the+high+card+for+a+straight+that+starts+with+an+ace>: Ace-to-five makes the lowest possible straight, while ten-to-ace is the highest possible straight. All other straights in between the low and high ends use the highest-ranking card to determine the hand's strength.
 
-Ace-to-five makes the lowest possible straight, while ten-to-ace is the highest possible straight. All other straights in between the low and high ends use the highest-ranking card to determine the hand's strength.
+See <https://www.southeastholdem.com/about/rules/hand-rankings/> for more with text-based examples. Nice to unit tests.
+
+See <https://www.google.com/search?q=how+do+you+compare+two+flushes+in+poker>: When comparing two flushes, the highest card determines which is higher. If the highest cards are equal then the second highest card is compared; if those are equal too, then the third highest card, and so on. For example SK-SJ-S9-S3-S2 beats DK-DJ-D7-D6-D5 because the nine beats the seven.
