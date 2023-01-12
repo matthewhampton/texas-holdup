@@ -4,12 +4,13 @@ from dataclasses import dataclass
 Face = Enum('Face', ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'])
 Suit = Enum('Suit', ['c', 'd', 'h', 's' ])
 
-FACE_SEQUENCE = dict((f, i+2) for i, f in enumerate(Face))
+FACE_VALUES = dict((f, i+2) for i, f in enumerate(Face))
 
 @dataclass
 class Card:
     face: Face
     suit: Suit
+    face_value: int
 
 class ParseError(Exception):
     pass
@@ -35,7 +36,7 @@ def parse_hand(hand_text, line_nr=None):
         except KeyError:
             raise_parse_error(line_nr, hand_text, "'%s' is not a valid suit value" % c[1])
 
-        hand.append(Card(face, suit))
+        hand.append(Card(face, suit, FACE_VALUES[face]))
 
     return hand
 
