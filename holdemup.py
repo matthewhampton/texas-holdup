@@ -73,7 +73,7 @@ def winner(hand1, hand2):
         return hand1
     if hand1.hand[0].face_value < hand2.hand[0].face_value:
         return hand2
-    return hand1 #TODO: kicker
+    return hand1 #TODO: kickers, etc.
 
 def new_hand(hand, full_sorted_hand, handname_text):
     handname = HandName[handname_text]
@@ -86,15 +86,43 @@ def label_hand(hand):
 
     best_hand = new_hand([sorted_hand[0]], sorted_hand, 'High Card')
 
-    cards_in_suit = {}
     for suit in Suit:
-        cards_in_suit[suit] = list(filter(lambda c: c.suit == suit, sorted_hand))
+        cards_in_suit = list(filter(lambda c: c.suit == suit, sorted_hand))
     
-        straight_flush = find_straight(cards_in_suit[suit])
+        straight_flush = find_straight(cards_in_suit)
         if straight_flush:
             best_hand = winner(best_hand, new_hand(straight_flush, sorted_hand, "Royal Flush" if straight_flush[0].face == Face.A else "Straight Flush"))
+        elif len(cards_in_suit)>=5:
+            best_hand = winner(best_hand, new_hand(cards_in_suit[:5], sorted_hand, "Flush"))
+
+    of_a_kinds = _find_of_a_kinds(sorted_hand)
+    
 
     return best_hand
+
+def find_of_a_kinds(hand):
+    sorted_hand = sorted(hand, key=lambda c: -c.face_value)
+    return _find_of_a_kinds(sorted_hand)
+
+def _find_of_a_kinds(sorted_hand):
+
+    of_a_kinds = {
+        2: [],
+        3: [],
+        4: [],
+    }
+    current_of_a_kind = []
+    for card in sorted_hand:
+        if current_of_a_kind and current_of_a_kind[0].face == card.face:
+            current_of_a_kind.append(card)
+        else:
+            if len(current_of_a_kind)>1:
+                of_a_kinds[len(current_of_a_kind)].append(current_of_a_kind)
+            current_of_a_kind = [card]
+    if len(current_of_a_kind)>1:
+        of_a_kinds[len(current_of_a_kind)].append(current_of_a_kind)
+        
+    return of_a_kinds
         
 
 def find_straight(hand):

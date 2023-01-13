@@ -1,5 +1,5 @@
 import unittest 
-from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand
+from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand, find_of_a_kinds
 
 class TestHoldemUp(unittest.TestCase):
 
@@ -46,11 +46,31 @@ class TestHoldemUp(unittest.TestCase):
         self.assertEqual(dump_hand(find_straight(parse_hand("5h 4s 3s 2h Ad"))), "5h 4s 3s 2h Ad") #Ace low
         self.assertEqual(dump_hand(find_straight(parse_hand("2d As Kc Qc Jh"))), "") #But not in the middle
 
+    def test_find_of_a_kinds(self):
+        of_a_kinds = find_of_a_kinds(parse_hand("Qs 8c Jd Jh 9s 8h"))
+        self.assertEqual(len(of_a_kinds[2]), 2)
+        self.assertEqual(len(of_a_kinds[3]), 0)
+        self.assertEqual(len(of_a_kinds[4]), 0)
+
+        of_a_kinds = find_of_a_kinds(parse_hand("Qs 8c Jd 8d Jh 9s 8h"))
+        self.assertEqual(len(of_a_kinds[2]), 1)
+        self.assertEqual(len(of_a_kinds[3]), 1)
+        self.assertEqual(len(of_a_kinds[4]), 0)
+
+        of_a_kinds = find_of_a_kinds(parse_hand("8s Qs 8c Jd 8d Jh 9s 8h"))
+        self.assertEqual(len(of_a_kinds[2]), 1)
+        self.assertEqual(len(of_a_kinds[3]), 0)
+        self.assertEqual(len(of_a_kinds[4]), 1)
+
+
     def test_label_hand_royal_flush(self):
         self.assertEqual(label_hand(parse_hand("As Ks Qs Js Ts 9s 8c")).dump(), "As Ks Qs Js Ts 9s 8c Royal Flush")
 
     def test_label_hand_straight_flush(self):
         self.assertEqual(label_hand(parse_hand("Ad Ks Qs Js Ts 9s 8c")).dump(), "Ks Qs Js Ts 9s Ad 8c Straight Flush")
+
+    def test_label_hand_flush(self):
+        self.assertEqual(label_hand(parse_hand("As Ks 2s Js Ts 9d 8c")).dump(), "As Ks Js Ts 2s 9d 8c Flush")
 
 
 if __name__ == '__main__':
