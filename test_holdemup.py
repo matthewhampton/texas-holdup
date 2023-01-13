@@ -80,6 +80,11 @@ class TestHoldemUp(unittest.TestCase):
     def test_label_hand_flush(self):
         self.assertEqual(label_hand(parse_hand("As Ks 2s Js Ts 9d 8c")).dump(), "As Ks Js Ts 2s 9d 8c Flush")
 
+    def test_label_hand_straight(self):
+        self.assertEqual(label_hand(parse_hand("Qs Jd Th 9s 8c")).dump(), "Qs Jd Th 9s 8c Straight")
+        self.assertEqual(label_hand(parse_hand("As Kd Qd Js Th")).dump(), "As Kd Qd Js Th Straight")
+        self.assertEqual(label_hand(parse_hand("5h 4s 3s 2h Ad")).dump(), "5h 4s 3s 2h Ad Straight")
+
     def test_label_hand_three_of_a_kind(self):
         self.assertEqual(label_hand(parse_hand("5s 5c 5h 3s 2c")).dump(), "5s 5c 5h 3s 2c Three of a Kind")
         self.assertEqual(label_hand(parse_hand("4s 4c 4h Ks Qc")).dump(), "4s 4c 4h Ks Qc Three of a Kind")

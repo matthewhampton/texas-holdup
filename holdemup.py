@@ -114,6 +114,10 @@ def label_hand(hand):
     elif of_a_kinds[2]:
         best_hand = winner(best_hand, new_hand(of_a_kinds[2][0], sorted_hand, "Pair"))
 
+    straight = find_straight(sorted_hand)
+    if straight:
+        best_hand = winner(best_hand, new_hand(straight, sorted_hand, "Straight"))
+
     return best_hand
 
 def find_of_a_kinds(hand):
