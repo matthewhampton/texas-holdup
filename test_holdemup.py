@@ -1,5 +1,5 @@
 import unittest 
-from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit
+from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand
 
 class TestHoldemUp(unittest.TestCase):
 
@@ -34,6 +34,15 @@ class TestHoldemUp(unittest.TestCase):
 
     def test_parse_hand_invalid_card_suit(self):
         self.assertRaises(ParseError, parse_hand, "Kc 9k Ks Kd 9d 3c 6d")
+
+    def test_find_straight(self):
+        self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s 8c"))), "Qs Jd Th 9s 8c")
+        self.assertEqual(dump_hand(find_straight(parse_hand("Ks Jd Th 9s 8c"))), "") #Not a straight
+        self.assertEqual(dump_hand(find_straight(parse_hand("Ks Jd Th 9s 8c 7s"))), "Jd Th 9s 8c 7s") #Now it is
+        self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s 8c 7s"))), "Qs Jd Th 9s 8c") #Choose the higher valued one
+        self.assertEqual(dump_hand(find_straight(parse_hand("8c Jd Th Qs 9s"))), "Qs Jd Th 9s 8c") #Order doesn't matter
+        self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s"))), "") #You need at least five cards for it to be a straight
+
 
 
 

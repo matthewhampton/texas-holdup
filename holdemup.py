@@ -40,6 +40,9 @@ def parse_hand(hand_text, line_nr=None):
 
     return hand
 
+def dump_hand(hand):
+    return " ".join("%s%s" % (c.face.name, c.suit.name) for c in hand) if hand else ""
+
 def parse_hands(hands_text):
     hands = []
     for line_nr, line in enumerate(hands_text.split('\n')):
@@ -47,6 +50,35 @@ def parse_hands(hands_text):
             continue
         hands.append(parse_hand(line, line_nr=line_nr))
     return hands
+    
+
+def find_straight(hand):
+    deduped_hand = []
+    for c in sorted(hand, key=lambda c: -c.face_value):
+        if deduped_hand and deduped_hand[-1].face_value == c.face_value:
+            continue
+        deduped_hand.append(c)
+
+    straight = _find_straight_in_deduped_hand(deduped_hand)
+    if straight:
+        return straight
+       
+def _find_straight_in_deduped_hand(deduped_hand):
+    for i in range(len(deduped_hand)-4):
+        potential_straight = deduped_hand[i:i+5]
+        if _is_straight(potential_straight):
+            return potential_straight
+    return None
+
+def _is_straight(potential_straight):
+    last_c = None
+    for c in potential_straight:
+        if last_c and last_c.face_value-1 != c.face_value:
+            return False
+        last_c = c
+    return True
+
+
 
 
 def main():
