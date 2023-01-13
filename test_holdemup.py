@@ -1,5 +1,5 @@
 import unittest 
-from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand
+from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand
 
 class TestHoldemUp(unittest.TestCase):
 
@@ -38,7 +38,7 @@ class TestHoldemUp(unittest.TestCase):
     def test_find_straight(self):
         self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s 8c"))), "Qs Jd Th 9s 8c")
         self.assertEqual(dump_hand(find_straight(parse_hand("Ks Jd Th 9s 8c"))), "") #Not a straight
-        self.assertEqual(dump_hand(find_straight(parse_hand("Ks Jd Th 9s 8c 7s"))), "Jd Th 9s 8c 7s") #Now it is
+        self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s 8c As"))), "Qs Jd Th 9s 8c") #Extras don't matter
         self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s 8c 7s"))), "Qs Jd Th 9s 8c") #Choose the higher valued one
         self.assertEqual(dump_hand(find_straight(parse_hand("8c Jd Th Qs 9s"))), "Qs Jd Th 9s 8c") #Order doesn't matter
         self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s"))), "") #You need at least five cards for it to be a straight
@@ -46,6 +46,11 @@ class TestHoldemUp(unittest.TestCase):
         self.assertEqual(dump_hand(find_straight(parse_hand("5h 4s 3s 2h Ad"))), "5h 4s 3s 2h Ad") #Ace low
         self.assertEqual(dump_hand(find_straight(parse_hand("2d As Kc Qc Jh"))), "") #But not in the middle
 
+    def test_label_hand_royal_flush(self):
+        self.assertEqual(label_hand(parse_hand("As Ks Qs Js Ts 9s 8c")).dump(), "As Ks Qs Js Ts 9s 8c Royal Flush")
+
+    def test_label_hand_straight_flush(self):
+        self.assertEqual(label_hand(parse_hand("Ad Ks Qs Js Ts 9s 8c")).dump(), "Ks Qs Js Ts 9s Ad 8c Straight Flush")
 
 
 if __name__ == '__main__':
