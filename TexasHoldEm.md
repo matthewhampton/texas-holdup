@@ -109,7 +109,7 @@ This consists of three cards of one rank and two cards of another rank – for e
 Five cards of the same suit. When comparing two flushes, the highest card determines which is higher. If the highest cards are equal then the second highest card is compared; if those are equal too, then the third highest card, and so on. For example SK-SJ-S9-S3-S2 beats DK-DJ-D7-D6-D5 because the nine beats the seven.
 
 6. Straight
-Five cards of mixed suits in sequence – for example Qs Jd Th 9s 8c. When comparing two sequences, the one with the higher ranking top card is better. Ace can count high or low in a straight, but not both at once, so A-K-Q-J-10 and 5-4-3-2-A are valid straights, but 2-A-K-Q-J is not. 5-4-3-2-A is the lowest kind of straight, the top card being the five.
+Five cards of mixed suits in sequence – for example Qs Jd Th 9s 8c. When comparing two sequences, the one with the higher ranking top card is better. Ace can count high or low in a straight, but not both at once, so As Kd Qd Js Th and 5h 4s 3s 2h Ad are valid straights, but 2d As Kc Qc Jh is not. 5-4-3-2-A is the lowest kind of straight, the top card being the five.
 
 7. Three of a Kind
 Three cards of the same rank plus two other cards. This combination is also known as Triplets or Trips. When comparing two threes of a kind the hand in which the three equal cards are of higher rank is better. So for example 5-5-5-3-2 beats 4-4-4-K-Q. If you have to compare two threes of a kind where the sets of three are of equal rank, then the higher of the two remaining cards in each hand are compared, and if those are equal, the lower odd card is compared.

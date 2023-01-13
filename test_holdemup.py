@@ -42,7 +42,9 @@ class TestHoldemUp(unittest.TestCase):
         self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s 8c 7s"))), "Qs Jd Th 9s 8c") #Choose the higher valued one
         self.assertEqual(dump_hand(find_straight(parse_hand("8c Jd Th Qs 9s"))), "Qs Jd Th 9s 8c") #Order doesn't matter
         self.assertEqual(dump_hand(find_straight(parse_hand("Qs Jd Th 9s"))), "") #You need at least five cards for it to be a straight
-
+        self.assertEqual(dump_hand(find_straight(parse_hand("As Kd Qd Js Th"))), "As Kd Qd Js Th") #Ace high
+        self.assertEqual(dump_hand(find_straight(parse_hand("5h 4s 3s 2h Ad"))), "5h 4s 3s 2h Ad") #Ace low
+        self.assertEqual(dump_hand(find_straight(parse_hand("2d As Kc Qc Jh"))), "") #But not in the middle
 
 
 

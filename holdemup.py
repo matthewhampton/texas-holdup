@@ -53,6 +53,9 @@ def parse_hands(hands_text):
     
 
 def find_straight(hand):
+    if not hand:
+        return
+
     deduped_hand = []
     for c in sorted(hand, key=lambda c: -c.face_value):
         if deduped_hand and deduped_hand[-1].face_value == c.face_value:
@@ -62,6 +65,13 @@ def find_straight(hand):
     straight = _find_straight_in_deduped_hand(deduped_hand)
     if straight:
         return straight
+
+    if deduped_hand[0].face == Face.A:
+        #Now try with the Ace low
+        deduped_hand.append(deduped_hand.pop(0))
+        straight = _find_straight_in_deduped_hand(deduped_hand)
+        if straight:
+            return straight
        
 def _find_straight_in_deduped_hand(deduped_hand):
     for i in range(len(deduped_hand)-4):
@@ -74,11 +84,10 @@ def _is_straight(potential_straight):
     last_c = None
     for c in potential_straight:
         if last_c and last_c.face_value-1 != c.face_value:
-            return False
+            if not (last_c.face == Face['2'] and c.face == Face.A):
+                return False
         last_c = c
     return True
-
-
 
 
 def main():
