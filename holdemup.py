@@ -1,5 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass
+import sys
 
 HandName = Enum('HandName', ['Royal Flush', 'Straight Flush', 'Four of a Kind', 'Full House', 'Flush', 'Straight', 'Three of a Kind', 'Two Pair', 'Pair', 'High Card'])
 Face = Enum('Face', ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'])
@@ -91,7 +92,7 @@ def winner(hand1, hand2, none_for_draw=False):
             return hand1
         if c1.face_value < c2.face_value:
             return hand2
-            
+
     if none_for_draw:
         return None
     else:
@@ -201,9 +202,47 @@ def _is_straight(potential_straight):
         last_c = c
     return True
 
+def process_hands_text(hands_text):
+    hands = parse_hands(hands_text)
+    output_text = ""
+    for i, hand in enumerate(hands):
+        
+        if len(hand) == 7:
+            hand = label_hand(hand)
+            is_winner = True
+            for j, other_hand in enumerate(hands):
+                if i == j:
+                    continue
+                if len(other_hand) < 7:
+                    continue
+                other_hand = label_hand(other_hand)
+                w = winner(other_hand, hand, none_for_draw=True)
+                if w is other_hand:
+                    is_winner = False
+                    break
+            output_text += hand.dump() + (" (winner)" if is_winner else "") + "\n"
+        else:
+            output_text += dump_hand(hand) + "\n"
+
+    return output_text
+
+def process_hands_text_and_print(hands_text):
+    print("-------------")
+    print(process_hands_text(hands_text))
 
 def main():
-    pass
+
+    hands_text = ""
+    for line in sys.stdin:
+        if not line.strip():
+            if hands_text:
+                process_hands_text_and_print(hands_text)
+                hands_text = ""
+        else:
+            hands_text += line
+
+    if hands_text:
+        process_hands_text_and_print(hands_text)
 
 if __name__ == "__main__":
     main()
