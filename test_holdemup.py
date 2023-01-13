@@ -1,5 +1,5 @@
 import unittest 
-from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand, find_of_a_kinds
+from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand, find_of_a_kinds, winner
 
 class TestHoldemUp(unittest.TestCase):
 
@@ -68,28 +68,115 @@ class TestHoldemUp(unittest.TestCase):
 
     def test_label_hand_straight_flush(self):
         self.assertEqual(label_hand(parse_hand("Ad Ks Qs Js Ts 9s 8c")).dump(), "Ks Qs Js Ts 9s Ad 8c Straight Flush")
+        self.assertEqual(winner(
+            label_hand(parse_hand("Ad Ks Qs Js Ts 9s 8c")),
+            label_hand(parse_hand("As Ks Qs Js Ts 9s 8c")),
+            ).dump(), "As Ks Qs Js Ts 9s 8c Royal Flush") # Royal Flush is better
 
     def test_label_hand_four_of_a_kind(self):
         self.assertEqual(label_hand(parse_hand("3s 3c 3h 3d As")).dump(), "3s 3c 3h 3d As Four of a Kind")
         self.assertEqual(label_hand(parse_hand("4s 4c 4h 4d 2s")).dump(), "4s 4c 4h 4d 2s Four of a Kind")
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("3s 3c 3h 3d As")),
+            label_hand(parse_hand("4s 4c 4h 4d 2s")),
+            ).dump(), "4s 4c 4h 4d 2s Four of a Kind") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("4s 4c 4h 4d As")),
+            label_hand(parse_hand("4s 4c 4h 4d 2s")),
+            ).dump(), "4s 4c 4h 4d As Four of a Kind") 
+
+        self.assertIsNone(winner(
+            label_hand(parse_hand("4s 4c 4h 4d As 2s")),
+            label_hand(parse_hand("4s 4c 4h 4d As 3s")),
+            none_for_draw=True))
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("3s 3c 3h 3d As")),
+            label_hand(parse_hand("Ad Ks Qs Js Ts 9s 8c")),
+            ).dump(), "Ks Qs Js Ts 9s Ad 8c Straight Flush") # Straight Flush is better
+
 
     def test_label_hand_full_house(self):
         self.assertEqual(label_hand(parse_hand("9s 9c 9h 4s 4c")).dump(), "9s 9c 9h 4s 4c Full House")
         self.assertEqual(label_hand(parse_hand("8s 8c 8h As Ac")).dump(), "8s 8c 8h As Ac Full House")
         self.assertEqual(label_hand(parse_hand("8s 8c 8h As Ac Ad")).dump(), "As Ac Ad 8s 8c 8h Full House")
 
+        self.assertEqual(winner(
+            label_hand(parse_hand("9s 9c 9h 4s 4c")),
+            label_hand(parse_hand("8s 8c 8h As Ac")),
+            ).dump(), "9s 9c 9h 4s 4c Full House") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("8s 8c 8h 4s 4c")),
+            label_hand(parse_hand("8s 8c 8h As Ac")),
+            ).dump(), "8s 8c 8h As Ac Full House") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("9s 9c 9h 4s 4c")),
+            label_hand(parse_hand("4s 4c 4h 4d 2s")),
+            ).dump(), "4s 4c 4h 4d 2s Four of a Kind") #Four of a kind is better
+
+
     def test_label_hand_flush(self):
         self.assertEqual(label_hand(parse_hand("As Ks 2s Js Ts 9d 8c")).dump(), "As Ks Js Ts 2s 9d 8c Flush")
+        
+        self.assertEqual(winner(
+            label_hand(parse_hand("9s 9c 9h 4s 4c")),
+            label_hand(parse_hand("As Ks 2s Js Ts 9d 8c")),
+            ).dump(), "9s 9c 9h 4s 4c Full House") 
 
     def test_label_hand_straight(self):
         self.assertEqual(label_hand(parse_hand("Qs Jd Th 9s 8c")).dump(), "Qs Jd Th 9s 8c Straight")
         self.assertEqual(label_hand(parse_hand("As Kd Qd Js Th")).dump(), "As Kd Qd Js Th Straight")
-        self.assertEqual(label_hand(parse_hand("5h 4s 3s 2h Ad")).dump(), "5h 4s 3s 2h Ad Straight")
+        self.assertEqual(label_hand(parse_hand("Ad 5h 4s 3s 2h")).dump(), "5h 4s 3s 2h Ad Straight")
         self.assertEqual(label_hand(parse_hand("Ad Ks Qs Jd Ts 9s 8c")).dump(), "Ad Ks Qs Jd Ts 9s 8c Straight")
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("Qs Jd Th 9s 8c")),
+            label_hand(parse_hand("As Kd Qd Js Th")),
+            ).dump(), "As Kd Qd Js Th Straight") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("Qs Jd Th 9s 8c")),
+            label_hand(parse_hand("Ad 5h 4s 3s 2h")),
+            ).dump(), "Qs Jd Th 9s 8c Straight") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("6d 5h 4s 3s 2h")),
+            label_hand(parse_hand("Ad 5h 4s 3s 2h")),
+            ).dump(), "6d 5h 4s 3s 2h Straight") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("Qs Jd Th 9s 8c")),
+            label_hand(parse_hand("As Ks 2s Js Ts 9d 8c")),
+            ).dump(), "As Ks Js Ts 2s 9d 8c Flush") 
+
 
     def test_label_hand_three_of_a_kind(self):
         self.assertEqual(label_hand(parse_hand("5s 5c 5h 3s 2c")).dump(), "5s 5c 5h 3s 2c Three of a Kind")
         self.assertEqual(label_hand(parse_hand("4s 4c 4h Ks Qc")).dump(), "4s 4c 4h Ks Qc Three of a Kind")
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("5s 5c 5h 3s 2c")),
+            label_hand(parse_hand("4s 4c 4h Ks Qc")),
+            ).dump(), "5s 5c 5h 3s 2c Three of a Kind") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("5s 5c 5h 3s 2c")),
+            label_hand(parse_hand("5s 5c 5h Ks Qc")),
+            ).dump(), "5s 5c 5h Ks Qc Three of a Kind") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("5s 5c 5h 4s 3c")),
+            label_hand(parse_hand("5s 5c 5h 4s 2c")),
+            ).dump(), "5s 5c 5h 4s 3c Three of a Kind") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("6d 5h 4s 3s 2h")),
+            label_hand(parse_hand("5s 5c 5h 3s 2c")),
+            ).dump(), "6d 5h 4s 3s 2h Straight") 
 
     def test_label_hand_two_pair(self):
         self.assertEqual(label_hand(parse_hand("Js Jc 2s 2c 4s")).dump(), "Js Jc 2s 2c 4s Two Pair")
@@ -99,15 +186,60 @@ class TestHoldemUp(unittest.TestCase):
         self.assertEqual(label_hand(parse_hand("Qs Qc 5s 5c 8s")).dump(), "Qs Qc 5s 5c 8s Two Pair")
         self.assertEqual(label_hand(parse_hand("Qs Qc 5s 5c 4s")).dump(), "Qs Qc 5s 5c 4s Two Pair")
 
+        self.assertEqual(winner(
+            label_hand(parse_hand("Js Jc 2s 2c 4s")),
+            label_hand(parse_hand("Ts Tc 9s 9c 8s")),
+            ).dump(), "Js Jc 2s 2c 4s Two Pair")         
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("8s 8c 5s 5c Ks")),
+            label_hand(parse_hand("8s 8c 6s 6c 3s")),
+            ).dump(), "8s 8c 6s 6c 3s Two Pair")         
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("Qs Qc 5s 5c 8s")),
+            label_hand(parse_hand("Qs Qc 5s 5c 4s")),
+            ).dump(), "Qs Qc 5s 5c 8s Two Pair")         
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("5s 5c 5h 4s 3c")),
+            label_hand(parse_hand("Ts Tc 9s 9c 8s")),
+            ).dump(), "5s 5c 5h 4s 3c Three of a Kind")         
+
     def test_label_hand_pair(self):
         self.assertEqual(label_hand(parse_hand("6s 6c 4h 3d 2s")).dump(), "6s 6c 4h 3d 2s Pair")
         self.assertEqual(label_hand(parse_hand("5s 5c Ah Kd Qs")).dump(), "5s 5c Ah Kd Qs Pair")
         self.assertEqual(label_hand(parse_hand("Js Jc Ah 9d 3s")).dump(), "Js Jc Ah 9d 3s Pair")
         self.assertEqual(label_hand(parse_hand("Js Jc Ah 8d 7s")).dump(), "Js Jc Ah 8d 7s Pair")
 
+        self.assertEqual(winner(
+            label_hand(parse_hand("6s 6c 4h 3d 2s")),
+            label_hand(parse_hand("5s 5c Ah Kd Qs")),
+            ).dump(), "6s 6c 4h 3d 2s Pair")  
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("Js Jc Ah 9d 3s")),
+            label_hand(parse_hand("Js Jc Ah 8d 7s")),
+            ).dump(), "Js Jc Ah 9d 3s Pair")  
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("Js Jc Ah 9d 3s")),
+            label_hand(parse_hand("8s 8c 6s 6c 3s")),
+            ).dump(), "8s 8c 6s 6c 3s Two Pair")           
+
     def test_label_hand_high_card(self):
         self.assertEqual(label_hand(parse_hand("As Jc 9h 5d 3s")).dump(), "As Jc 9h 5d 3s High Card")
         self.assertEqual(label_hand(parse_hand("As Td 9h 6c 4s")).dump(), "As Td 9h 6c 4s High Card")
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("As Jc 9h 5d 3s")),
+            label_hand(parse_hand("As Td 9h 6c 4s")),
+            ).dump(), "As Jc 9h 5d 3s High Card") 
+
+        self.assertEqual(winner(
+            label_hand(parse_hand("As Jc 9h 5d 3s")),
+            label_hand(parse_hand("Js Jc Ah 8d 7s")),
+            ).dump(), "Js Jc Ah 8d 7s Pair") 
 
 if __name__ == '__main__':
     unittest.main()
