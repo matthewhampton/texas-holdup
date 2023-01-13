@@ -73,7 +73,10 @@ def winner(hand1, hand2):
         return hand1
     if hand1.hand[0].face_value < hand2.hand[0].face_value:
         return hand2
-    return hand1 #TODO: kickers, etc.
+    #TODO Full house / two pair check second pair on equal
+
+    #TODO: kickers
+    return hand1 
 
 def new_hand(hand, full_sorted_hand, handname_text):
     handname = HandName[handname_text]
@@ -96,7 +99,20 @@ def label_hand(hand):
             best_hand = winner(best_hand, new_hand(cards_in_suit[:5], sorted_hand, "Flush"))
 
     of_a_kinds = _find_of_a_kinds(sorted_hand)
-    
+
+    if of_a_kinds[4]:
+        best_hand = winner(best_hand, new_hand(of_a_kinds[4][0], sorted_hand, "Four of a Kind"))
+    elif of_a_kinds[3]:
+        if len(of_a_kinds[3])>1:
+            best_hand = winner(best_hand, new_hand(of_a_kinds[3][0]+of_a_kinds[3][1][:2], sorted_hand, "Full House"))
+        if of_a_kinds[2]:
+            best_hand = winner(best_hand, new_hand(of_a_kinds[3][0]+of_a_kinds[2][0], sorted_hand, "Full House"))
+
+        best_hand = winner(best_hand, new_hand(of_a_kinds[3][0], sorted_hand, "Three of a Kind"))
+    elif len(of_a_kinds[2])>1:
+        best_hand = winner(best_hand, new_hand(of_a_kinds[2][0]+of_a_kinds[2][1], sorted_hand, "Two Pair"))
+    elif of_a_kinds[2]:
+        best_hand = winner(best_hand, new_hand(of_a_kinds[2][0], sorted_hand, "Pair"))
 
     return best_hand
 

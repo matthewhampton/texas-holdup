@@ -69,9 +69,38 @@ class TestHoldemUp(unittest.TestCase):
     def test_label_hand_straight_flush(self):
         self.assertEqual(label_hand(parse_hand("Ad Ks Qs Js Ts 9s 8c")).dump(), "Ks Qs Js Ts 9s Ad 8c Straight Flush")
 
+    def test_label_hand_four_of_a_kind(self):
+        self.assertEqual(label_hand(parse_hand("3s 3c 3h 3d As")).dump(), "3s 3c 3h 3d As Four of a Kind")
+        self.assertEqual(label_hand(parse_hand("4s 4c 4h 4d 2s")).dump(), "4s 4c 4h 4d 2s Four of a Kind")
+
+    def test_label_hand_full_house(self):
+        self.assertEqual(label_hand(parse_hand("9s 9c 9h 4s 4c")).dump(), "9s 9c 9h 4s 4c Full House")
+        self.assertEqual(label_hand(parse_hand("8s 8c 8h As Ac")).dump(), "8s 8c 8h As Ac Full House")
+
     def test_label_hand_flush(self):
         self.assertEqual(label_hand(parse_hand("As Ks 2s Js Ts 9d 8c")).dump(), "As Ks Js Ts 2s 9d 8c Flush")
 
+    def test_label_hand_three_of_a_kind(self):
+        self.assertEqual(label_hand(parse_hand("5s 5c 5h 3s 2c")).dump(), "5s 5c 5h 3s 2c Three of a Kind")
+        self.assertEqual(label_hand(parse_hand("4s 4c 4h Ks Qc")).dump(), "4s 4c 4h Ks Qc Three of a Kind")
+
+    def test_label_hand_two_pair(self):
+        self.assertEqual(label_hand(parse_hand("Js Jc 2s 2c 4s")).dump(), "Js Jc 2s 2c 4s Two Pair")
+        self.assertEqual(label_hand(parse_hand("Ts Tc 9s 9c 8s")).dump(), "Ts Tc 9s 9c 8s Two Pair")
+        self.assertEqual(label_hand(parse_hand("8s 8c 6s 6c 3s")).dump(), "8s 8c 6s 6c 3s Two Pair")
+        self.assertEqual(label_hand(parse_hand("8s 8c 5s 5c Ks")).dump(), "8s 8c 5s 5c Ks Two Pair")
+        self.assertEqual(label_hand(parse_hand("Qs Qc 5s 5c 8s")).dump(), "Qs Qc 5s 5c 8s Two Pair")
+        self.assertEqual(label_hand(parse_hand("Qs Qc 5s 5c 4s")).dump(), "Qs Qc 5s 5c 4s Two Pair")
+
+    def test_label_hand_pair(self):
+        self.assertEqual(label_hand(parse_hand("6s 6c 4h 3d 2s")).dump(), "6s 6c 4h 3d 2s Pair")
+        self.assertEqual(label_hand(parse_hand("5s 5c Ah Kd Qs")).dump(), "5s 5c Ah Kd Qs Pair")
+        self.assertEqual(label_hand(parse_hand("Js Jc Ah 9d 3s")).dump(), "Js Jc Ah 9d 3s Pair")
+        self.assertEqual(label_hand(parse_hand("Js Jc Ah 8d 7s")).dump(), "Js Jc Ah 8d 7s Pair")
+
+    def test_label_hand_high_card(self):
+        self.assertEqual(label_hand(parse_hand("As Jc 9h 5d 3s")).dump(), "As Jc 9h 5d 3s High Card")
+        self.assertEqual(label_hand(parse_hand("As Td 9h 6c 4s")).dump(), "As Td 9h 6c 4s High Card")
 
 if __name__ == '__main__':
     unittest.main()
