@@ -64,19 +64,38 @@ def parse_hands(hands_text):
         hands.append(parse_hand(line, line_nr=line_nr))
     return hands
 
-def winner(hand1, hand2):
+def winner(hand1, hand2, none_for_draw=False):
     if hand1.hand_rank > hand2.hand_rank:
         return hand1
     if hand1.hand_rank < hand2.hand_rank:
         return hand2
+
     if hand1.hand[0].face_value > hand2.hand[0].face_value:
         return hand1
     if hand1.hand[0].face_value < hand2.hand[0].face_value:
         return hand2
-    #TODO Full house / two pair check second pair on equal
 
-    #TODO: kickers
-    return hand1 
+    if hand1.name == HandName['Full House']:
+        if hand1.hand[3].face_value > hand2.hand[3].face_value:
+            return hand1
+        if hand1.hand[3].face_value < hand2.hand[3].face_value:
+            return hand2
+    elif hand1.name == HandName['Two Pair']:
+        if hand1.hand[2].face_value > hand2.hand[2].face_value:
+            return hand1
+        if hand1.hand[2].face_value < hand2.hand[2].face_value:
+            return hand2
+
+    for c1, c2 in zip(hand1.kickers, hand2.kickers):
+        if c1.face_value > c2.face_value:
+            return hand1
+        if c1.face_value < c2.face_value:
+            return hand2
+            
+    if none_for_draw:
+        return None
+    else:
+        return hand1 
 
 def new_hand(hand, full_sorted_hand, handname_text):
     handname = HandName[handname_text]
