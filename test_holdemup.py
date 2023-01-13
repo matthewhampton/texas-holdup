@@ -1,7 +1,44 @@
 import unittest 
-from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand, find_of_a_kinds, winner
+from holdemup import parse_hands, parse_hand, ParseError, Card, Face, Suit, find_straight, dump_hand, label_hand, find_of_a_kinds, winner, process_hands_text
 
 class TestHoldemUp(unittest.TestCase):
+
+    def test_process_hands_text(self):
+        processed = process_hands_text("""
+Kc 9s Ks Kd 9d 3c 6d
+9c Ah Ks Kd 9d 3c 6d
+Ac Qc Ks Kd 9d 3c
+9h 5s
+4d 2d Ks Kd 9d 3c 6d
+7s Ts Ks Kd 9d
+        """)
+        self.assertEqual(processed, """Kc Ks Kd 9s 9d 6d 3c Full House (winner)
+Ks Kd 9c 9d Ah 6d 3c Two Pair
+Ac Qc Ks Kd 9d 3c
+9h 5s
+Kd 9d 6d 4d 2d Ks 3c Flush
+7s Ts Ks Kd 9d
+""")
+
+    def test_process_hands_text_draw(self):
+        processed = process_hands_text("""
+Kc 9s Ks Kd 9d 3c 6d
+9c Ah Ks Kd 9d 3c 6d
+Kc 9s Ks Kd 9d 6c 5d
+Ac Qc Ks Kd 9d 3c
+9h 5s
+4d 2d Ks Kd 9d 3c 6d
+7s Ts Ks Kd 9d
+        """)
+        self.assertEqual(processed, """Kc Ks Kd 9s 9d 6d 3c Full House (winner)
+Ks Kd 9c 9d Ah 6d 3c Two Pair
+Kc Ks Kd 9s 9d 6c 5d Full House (winner)
+Ac Qc Ks Kd 9d 3c
+9h 5s
+Kd 9d 6d 4d 2d Ks 3c Flush
+7s Ts Ks Kd 9d
+""")
+
 
     def test_parse_hands_documented_example(self):
         hands = parse_hands("""
