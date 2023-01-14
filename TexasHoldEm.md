@@ -68,23 +68,8 @@ YOU: Why he stayed in with only the 4 and 2 of diamonds? That's just...
 
 BOB: Hey! Show's on in ten minutes! Get to work!
 
-# Hands
-
-These are shown lowest to highest:
-
-1. High card: Simple value of the card. Lowest: 2 – Highest: Ace 
-2. Pair: Two cards with the same value	
-3. Two pairs: Two times two cards with the same value	
-4. Three of a kind: Three cards with the same value	
-5. Straight: Sequence of 5 cards in increasing value (Ace can precede 2 and follow up King)
-6. Flush: 5 cards of the same suit
-7. Full house: Combination of three of a kind and a pair	
-8. Four of a kind: Four cards of the same value	
-9. Straight flush: Straight of the same suit
-
 # Hand Rankings
 
-Standard Poker Hand Ranking
 There are 52 cards in the pack, and the ranking of the individual cards, from high to low, is ace, king, queen, jack, 10, 9, 8, 7, 6, 5, 4, 3, 2. There is no ranking between the suits – so for example the king of hearts and the king of spades are equal.
 
 A poker hand consists of five cards. The categories of hand, from highest to lowest, are listed below. Any hand in a higher category beats any hand in a lower category (so for example any three of a kind beats any two pairs). Between hands in the same category the rank of the individual cards decides which is better, as described in more detail below.
