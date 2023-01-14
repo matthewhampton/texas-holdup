@@ -18,7 +18,7 @@ Ac Qc Ks Kd 9d 3c
 
 ```
 
-After the blank line, the winning hand(s) will be calculated and the out produced. For example:
+After the blank line, the winning hand(s) will be calculated and the output produced. For example:
 
 ```
 -------------
